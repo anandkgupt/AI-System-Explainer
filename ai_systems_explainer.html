@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Systems — Detailed Guide</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a18; min-height: 100vh; }
+
+.header { background: #1a1a18; color: #f5f4f0; padding: 32px 40px 28px; }
+.header h1 { font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+.header p { font-size: 14px; color: #9c9a92; }
+
+.tabs { display: flex; gap: 0; background: #fff; border-bottom: 1px solid #e0dfd8; padding: 0 40px; }
+.tab-btn {
+  padding: 14px 20px;
+  border: none; border-bottom: 2px solid transparent;
+  background: none; font-size: 13px; font-weight: 500;
+  color: #73726c; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: #1a1a18; }
+.tab-btn.active { color: #1a1a18; border-bottom-color: #1a1a18; }
+.tab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.content { padding: 32px 40px; max-width: 960px; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.concept-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  padding: 24px; background: #fff;
+  border-radius: 12px; border: 1px solid #e0dfd8;
+  margin-bottom: 28px;
+}
+.concept-icon { width: 56px; height: 56px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.concept-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+.concept-tagline { font-size: 14px; color: #73726c; line-height: 1.6; margin-bottom: 10px; }
+.analogy-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; }
+
+.section-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: #9c9a92; text-transform: uppercase; margin-bottom: 12px; margin-top: 28px; }
+
+.steps-grid { display: flex; flex-direction: column; gap: 10px; }
+.step-card { display: flex; gap: 16px; align-items: flex-start; padding: 16px 18px; background: #fff; border: 1px solid #e0dfd8; border-radius: 10px; }
+.step-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+.step-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+.step-desc { font-size: 13px; color: #5a5a55; line-height: 1.6; }
+code { font-family: 'Menlo', 'Monaco', monospace; font-size: 11px; background: #f0efe8; padding: 2px 6px; border-radius: 4px; }
+
+.interactive-demo { padding: 20px; background: #f0efe8; border-radius: 12px; border: 1px solid #d8d7cf; margin-top: 28px; }
+.demo-label { font-size: 12px; color: #73726c; margin-bottom: 12px; }
+.token-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.token { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; border: 1px solid #ccc; cursor: pointer; transition: all .2s; background: #fff; color: #5a5a55; }
+.token.selected { background: #1a1a18; color: #f5f4f0; border-color: #1a1a18; }
+.token:hover:not(.selected) { background: #e8e7e0; }
+.output-box { background: #fff; border: 1px solid #e0dfd8; border-radius: 8px; padding: 14px; font-size: 13px; min-height: 60px; color: #5a5a55; line-height: 1.7; white-space: pre-line; }
+
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 28px; }
+.tool-card { padding: 14px; background: #fff; border: 1px solid #e0dfd8; border-radius: 10px; text-align: center; }
+.tool-icon { font-size: 22px; margin-bottom: 6px; }
+.tool-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.tool-cat { font-size: 11px; color: #9c9a92; }
+
+.info-list { padding: 18px; background: #fff; border: 1px solid #e0dfd8; border-radius: 10px; margin-top: 28px; }
+.info-item { display: flex; gap: 10px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f0efe8; align-items: flex-start; }
+.info-item:last-child { border-bottom: none; }
+.info-icon { flex-shrink: 0; width: 20px; text-align: center; }
+.info-title { font-weight: 600; min-width: 100px; }
+.info-val { color: #5a5a55; line-height: 1.5; }
+
+.rag-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.rag-input-row input { flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; background: #fff; }
+.rag-input-row button { padding: 8px 18px; background: #1a1a18; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; }
+.rag-result { background: #fff; border: 1px solid #e0dfd8; border-radius: 8px; padding: 12px; margin-bottom: 8px; }
+.rag-source { font-size: 11px; color: #9c9a92; margin-top: 6px; }
+
+.agent-log { background: #1a1a18; border-radius: 8px; padding: 14px; font-size: 12px; font-family: 'Menlo', monospace; line-height: 1.9; min-height: 90px; color: #9c9a92; }
+.log-tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+
+.mcp-server { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border: 1px solid #e0dfd8; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all .2s; }
+.mcp-server:hover { border-color: #888; }
+.mcp-server.connected { border-left: 3px solid #1D9E75; }
+.mcp-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+.mcp-dot.on { background: #1D9E75; }
+.mcp-name { font-size: 13px; font-weight: 600; flex: 1; }
+.mcp-status { font-size: 11px; color: #9c9a92; }
+.mcp-status.on { color: #0F6E56; }
+.mcp-tools-list { font-size: 11px; color: #9c9a92; margin-top: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AI Systems: Detailed Process Guide</h1>
+  <p>LLM · RAG · AI Agent · MCP — with examples, processes, and tools</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('llm', this)"><span class="tab-dot" style="background:#378ADD"></span>LLM — Brain</button>
+  <button class="tab-btn" onclick="showTab('rag', this)"><span class="tab-dot" style="background:#1D9E75"></span>RAG — Brain + Books</button>
+  <button class="tab-btn" onclick="showTab('agent', this)"><span class="tab-dot" style="background:#EF9F27"></span>AI Agent — Brain + Hands</button>
+  <button class="tab-btn" onclick="showTab('mcp', this)"><span class="tab-dot" style="background:#7F77DD"></span>MCP — Nervous System</button>
+</div>
+
+<div class="content">
+
+<!-- LLM -->
+<div class="panel active" id="panel-llm">
+  <div class="concept-header">
+    <div class="concept-icon" style="background:#E6F1FB">🧠</div>
+    <div>
+      <div class="concept-title">Large Language Model (LLM)</div>
+      <div class="concept-tagline">The core reasoning engine. Generates text by predicting the most likely next token, trained on billions of text examples. Everything else builds on top of this.</div>
+      <span class="analogy-badge" style="background:#E6F1FB;color:#0C447C">= The Brain — pure intelligence, no persistent memory, no external tools</span>
+    </div>
+  </div>
+
+  <div class="section-label">How it works — step by step</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+      <div><div class="step-title">Tokenization</div><div class="step-desc">Your input text is split into tokens — words, sub-words, or characters. "Hello world" → <code>["Hello", " world"]</code>. Each token maps to an integer ID in a vocabulary of ~50,000–100,000 entries.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">2</div>
+      <div><div class="step-title">Embedding</div><div class="step-desc">Each token ID is converted into a high-dimensional float vector (e.g. 4,096 numbers). Similar-meaning words cluster together — "king" and "queen" are mathematically close in this space.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">3</div>
+      <div><div class="step-title">Attention layers</div><div class="step-desc">Stacked transformer blocks let every token "attend" to every other. In "The cat sat because it was tired", the word "it" learns to strongly attend to "cat" — resolving meaning via context. Repeated across dozens of layers.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">4</div>
+      <div><div class="step-title">Next-token prediction</div><div class="step-desc">The model outputs a probability distribution over its entire vocabulary. The highest-probability token is selected (or sampled). This repeats autoregressively — one token at a time — until the end token or max length is reached.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">5</div>
+      <div><div class="step-title">Detokenization</div><div class="step-desc">Token IDs are converted back to human-readable text and returned as the final response. What looks like instant generation is actually thousands of small predictions chained together.</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Interactive demo — click a prompt</div>
+  <div class="interactive-demo">
+    <div class="demo-label">Select a prompt to trace how the LLM processes it:</div>
+    <div class="token-row" id="llm-prompts">
+      <span class="token" onclick="llmDemo(this,'capital')">What is the capital of France?</span>
+      <span class="token" onclick="llmDemo(this,'code')">Write a Python loop</span>
+      <span class="token" onclick="llmDemo(this,'poem')">Write a haiku about rain</span>
+      <span class="token" onclick="llmDemo(this,'reason')">Is 17 a prime number?</span>
+    </div>
+    <div class="output-box" id="llm-output">Click a prompt above to trace the LLM's process →</div>
+  </div>
+
+  <div class="section-label">Popular LLM providers & models</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">🟠</div><div class="tool-name">Claude</div><div class="tool-cat">Anthropic</div></div>
+    <div class="tool-card"><div class="tool-icon">🟢</div><div class="tool-name">GPT-4o</div><div class="tool-cat">OpenAI</div></div>
+    <div class="tool-card"><div class="tool-icon">🔵</div><div class="tool-name">Gemini</div><div class="tool-cat">Google</div></div>
+    <div class="tool-card"><div class="tool-icon">🦙</div><div class="tool-name">Llama 3</div><div class="tool-cat">Meta (open)</div></div>
+    <div class="tool-card"><div class="tool-icon">🌊</div><div class="tool-name">Mistral</div><div class="tool-cat">Mistral AI</div></div>
+    <div class="tool-card"><div class="tool-icon">💎</div><div class="tool-name">Gemma</div><div class="tool-cat">Google (open)</div></div>
+  </div>
+
+  <div class="section-label">Key limitations</div>
+  <div class="info-list">
+    <div class="info-item"><span class="info-icon">⚠️</span><span class="info-title">Knowledge cutoff</span><span class="info-val">Cannot know events after its training date. No real-time web access by default.</span></div>
+    <div class="info-item"><span class="info-icon">⚠️</span><span class="info-title">No memory</span><span class="info-val">Each conversation starts fresh. Cannot remember past sessions without external storage.</span></div>
+    <div class="info-item"><span class="info-icon">⚠️</span><span class="info-title">Hallucination</span><span class="info-val">May confidently generate false information, especially on niche or recent topics.</span></div>
+    <div class="info-item"><span class="info-icon">⚠️</span><span class="info-title">No action</span><span class="info-val">Can only produce text — cannot send emails, call APIs, or browse the web by itself.</span></div>
+  </div>
+</div>
+
+<!-- RAG -->
+<div class="panel" id="panel-rag">
+  <div class="concept-header">
+    <div class="concept-icon" style="background:#E1F5EE">📚</div>
+    <div>
+      <div class="concept-title">Retrieval-Augmented Generation (RAG)</div>
+      <div class="concept-tagline">Adds a live "lookup" step before the LLM responds. Fetches relevant chunks from your knowledge base and injects them as context — grounding answers in real documents.</div>
+      <span class="analogy-badge" style="background:#E1F5EE;color:#085041">= Brain + Books — the AI opens a relevant textbook before answering</span>
+    </div>
+  </div>
+
+  <div class="section-label">How it works — step by step</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">1</div>
+      <div><div class="step-title">Ingest & chunk documents</div><div class="step-desc">Your documents (PDFs, wikis, Notion pages, CSVs) are split into ~500-token chunks. Each chunk is a self-contained unit of knowledge that can be retrieved independently.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">2</div>
+      <div><div class="step-title">Embed into a vector database</div><div class="step-desc">Each chunk is passed through an embedding model (e.g. <code>text-embedding-3-large</code>) to create a vector. These vectors are stored in a vector DB like Pinecone or pgvector. This happens once at setup time.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">3</div>
+      <div><div class="step-title">Embed the user's query</div><div class="step-desc">When a user asks a question, it's also embedded using the same model — turning it into a vector in the same space as the documents.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">4</div>
+      <div><div class="step-title">Semantic search → retrieve top-k chunks</div><div class="step-desc">The system finds the most similar chunks via cosine similarity (measuring angle between vectors). Top 3–10 chunks are returned — these are the "most relevant pages from the book."</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">5</div>
+      <div><div class="step-title">Augment the prompt & generate</div><div class="step-desc">Retrieved chunks are injected into the prompt: <code>Context: [chunk1, chunk2...] Question: [user query]</code>. The LLM generates a grounded, citation-able answer using that context.</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Interactive demo — simulate RAG lookup</div>
+  <div class="interactive-demo">
+    <div class="demo-label">Ask a question — watch RAG retrieve docs, then generate a grounded answer:</div>
+    <div class="rag-input-row">
+      <input type="text" id="rag-input" value="What is our refund policy?">
+      <button onclick="ragDemo()">Search</button>
+    </div>
+    <div id="rag-results"></div>
+    <div class="output-box" id="rag-output" style="display:none;margin-top:10px"></div>
+  </div>
+
+  <div class="section-label">Popular RAG tools & frameworks</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">🦜</div><div class="tool-name">LangChain</div><div class="tool-cat">Orchestration</div></div>
+    <div class="tool-card"><div class="tool-icon">🦙</div><div class="tool-name">LlamaIndex</div><div class="tool-cat">RAG framework</div></div>
+    <div class="tool-card"><div class="tool-icon">📌</div><div class="tool-name">Pinecone</div><div class="tool-cat">Vector DB</div></div>
+    <div class="tool-card"><div class="tool-icon">🔍</div><div class="tool-name">Weaviate</div><div class="tool-cat">Vector DB</div></div>
+    <div class="tool-card"><div class="tool-icon">🐘</div><div class="tool-name">pgvector</div><div class="tool-cat">Postgres ext.</div></div>
+    <div class="tool-card"><div class="tool-icon">🧩</div><div class="tool-name">ChromaDB</div><div class="tool-cat">Local vector DB</div></div>
+  </div>
+</div>
+
+<!-- AI AGENT -->
+<div class="panel" id="panel-agent">
+  <div class="concept-header">
+    <div class="concept-icon" style="background:#FAEEDA">🤖</div>
+    <div>
+      <div class="concept-title">AI Agent</div>
+      <div class="concept-tagline">An LLM given a goal and a set of tools. It autonomously plans, picks tools, observes results, and iterates — completing multi-step tasks without human hand-holding at each step.</div>
+      <span class="analogy-badge" style="background:#FAEEDA;color:#633806">= Brain + Hands — can think AND take real-world actions</span>
+    </div>
+  </div>
+
+  <div class="section-label">How it works — the ReAct loop</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">1</div>
+      <div><div class="step-title">Receive a goal</div><div class="step-desc">The agent receives a high-level objective: "Book a meeting with Alice next Tuesday at 2pm and send her an invite." No step-by-step instructions — it must figure out the plan itself.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">2</div>
+      <div><div class="step-title">Reason & plan (Thought)</div><div class="step-desc">The LLM reasons: "I need to check Alice's calendar, create the event, then email her." This internal chain-of-thought is often invisible to the user but essential to correct execution.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">3</div>
+      <div><div class="step-title">Select & call a tool (Action)</div><div class="step-desc">It picks the right tool and calls it: <code>calendar.check_availability(user="alice", date="tuesday")</code>. Tools can be: web search, code executor, database, email, file system, APIs.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">4</div>
+      <div><div class="step-title">Observe result</div><div class="step-desc">The tool returns data. The agent reads it: "Alice is free 2–3pm Tuesday." This observation feeds back into the reasoning loop as new context.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">5</div>
+      <div><div class="step-title">Iterate → report</div><div class="step-desc">Thought → Action → Observation loops until the goal is reached or the agent determines it's stuck. Finally, it reports the outcome: "Meeting booked and invite sent to Alice."</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Interactive demo — simulate an agent's ReAct loop</div>
+  <div class="interactive-demo">
+    <div class="demo-label">Choose a task to watch the agent reason and act step by step:</div>
+    <div class="token-row">
+      <span class="token" onclick="agentDemo(this,'research')">Research AI news</span>
+      <span class="token" onclick="agentDemo(this,'code')">Fix a bug in code</span>
+      <span class="token" onclick="agentDemo(this,'email')">Draft & send report</span>
+    </div>
+    <div id="agent-log" class="agent-log" style="display:none"></div>
+  </div>
+
+  <div class="section-label">Popular agent frameworks & tools</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">💻</div><div class="tool-name">Claude Code</div><div class="tool-cat">Coding agent</div></div>
+    <div class="tool-card"><div class="tool-icon">🕵️</div><div class="tool-name">AutoGPT</div><div class="tool-cat">Autonomous</div></div>
+    <div class="tool-card"><div class="tool-icon">🤝</div><div class="tool-name">CrewAI</div><div class="tool-cat">Multi-agent</div></div>
+    <div class="tool-card"><div class="tool-icon">🦜</div><div class="tool-name">LangGraph</div><div class="tool-cat">Agent graphs</div></div>
+    <div class="tool-card"><div class="tool-icon">🧩</div><div class="tool-name">OpenAI Agents</div><div class="tool-cat">SDK</div></div>
+    <div class="tool-card"><div class="tool-icon">🔧</div><div class="tool-name">Semantic Kernel</div><div class="tool-cat">Microsoft</div></div>
+  </div>
+</div>
+
+<!-- MCP -->
+<div class="panel" id="panel-mcp">
+  <div class="concept-header">
+    <div class="concept-icon" style="background:#EEEDFE">⚡</div>
+    <div>
+      <div class="concept-title">Model Context Protocol (MCP)</div>
+      <div class="concept-tagline">An open standard by Anthropic that lets AI models connect to external services through a unified protocol. Think of it as a universal USB port — one standard that connects the AI brain to any external tool or data source.</div>
+      <span class="analogy-badge" style="background:#EEEDFE;color:#3C3489">= Nervous System — the wiring that connects everything together</span>
+    </div>
+  </div>
+
+  <div class="section-label">How it works — step by step</div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">1</div>
+      <div><div class="step-title">MCP server exposes capabilities</div><div class="step-desc">A developer wraps an API (GitHub, Notion, Gmail...) in an MCP server. The server declares: "I offer these tools" (e.g. <code>search_issues</code>, <code>create_pr</code>) and "these resources" (repos, files). Done once, usable by any AI client.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">2</div>
+      <div><div class="step-title">MCP client connects & discovers</div><div class="step-desc">An AI assistant (Claude, Cursor, etc.) acts as MCP client. At startup it connects to configured MCP servers and discovers their available tools via a handshake — like reading a service's menu.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">3</div>
+      <div><div class="step-title">User makes a natural language request</div><div class="step-desc">"Show me all open bugs assigned to me." The AI understands this requires an external tool — it can't answer from training data alone.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">4</div>
+      <div><div class="step-title">Structured tool call via MCP</div><div class="step-desc">The AI sends a structured call: <code>{"tool":"search_issues","args":{"assignee":"me","state":"open"}}</code>. MCP handles transport (HTTP/SSE or stdio), authentication, and serialization invisibly.</div></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">5</div>
+      <div><div class="step-title">Result returned & synthesized</div><div class="step-desc">The MCP server returns structured data. The AI reads the JSON and synthesizes a natural response: "You have 7 open bugs: [list with priorities]." The user sees clean language, never raw API responses.</div></div>
+    </div>
+  </div>
+
+  <div class="section-label">Interactive demo — click a server to see its tools</div>
+  <div class="interactive-demo">
+    <div class="demo-label">Click an MCP server to see what tools it exposes to the AI assistant:</div>
+    <div id="mcp-servers">
+      <div class="mcp-server connected" onclick="showMcpTools(this,'github')">
+        <div class="mcp-dot on"></div>
+        <div style="flex:1"><div class="mcp-name">GitHub MCP</div><div class="mcp-tools-list" id="mcp-tools-github"></div></div>
+        <div class="mcp-status on">Connected</div>
+      </div>
+      <div class="mcp-server connected" onclick="showMcpTools(this,'notion')">
+        <div class="mcp-dot on"></div>
+        <div style="flex:1"><div class="mcp-name">Notion MCP</div><div class="mcp-tools-list" id="mcp-tools-notion"></div></div>
+        <div class="mcp-status on">Connected</div>
+      </div>
+      <div class="mcp-server connected" onclick="showMcpTools(this,'happenstance')">
+        <div class="mcp-dot on"></div>
+        <div style="flex:1"><div class="mcp-name">Happenstance MCP</div><div class="mcp-tools-list" id="mcp-tools-happenstance"></div></div>
+        <div class="mcp-status on">Connected</div>
+      </div>
+      <div class="mcp-server" onclick="showMcpTools(this,'slack')">
+        <div class="mcp-dot"></div>
+        <div style="flex:1"><div class="mcp-name">Slack MCP</div><div class="mcp-tools-list" id="mcp-tools-slack"></div></div>
+        <div class="mcp-status">Not connected</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Why MCP matters</div>
+  <div class="info-list">
+    <div class="info-item"><span class="info-icon">✅</span><span class="info-title">Standardized</span><span class="info-val">One protocol works with every AI client. Build an MCP server once, connect to Claude, Cursor, or any future AI tool.</span></div>
+    <div class="info-item"><span class="info-icon">✅</span><span class="info-title">Secure</span><span class="info-val">OAuth-based authentication. The AI never sees your raw credentials — access is scoped and auditable.</span></div>
+    <div class="info-item"><span class="info-icon">✅</span><span class="info-title">Composable</span><span class="info-val">An agent can combine GitHub + Notion + Gmail MCP simultaneously to complete complex cross-tool workflows.</span></div>
+    <div class="info-item"><span class="info-icon">✅</span><span class="info-title">Open ecosystem</span><span class="info-val">Open source spec — thousands of MCP servers already exist for popular tools. Anyone can build one.</span></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+const llmData = {
+  capital: '📥 Tokenized: ["What", " is", " the", " capital", " of", " France", "?"]\n🔢 Embedded: 7 vectors of 4096 dimensions\n🔍 Attention: "capital" strongly attends to "France"\n📊 Top prediction: "Paris" (prob: 0.998)\n✅ Response: "The capital of France is Paris."',
+  code:    '📥 Tokenized: ["Write", " a", " Python", " loop"]\n🔢 Embedded: code-context activations triggered\n🔍 Attention: "Python" + "loop" → syntax patterns\n📊 Token-by-token: "for", " i", " in", " range(10)", ":", "\\n    print(i)"\n✅ Response:\nfor i in range(10):\n    print(i)',
+  poem:    '📥 Tokenized: ["Write", " a", " haiku", " about", " rain"]\n🔢 Embedded: "haiku" → 5-7-5 syllable structure\n🔍 Attention: "rain" → nature, melancholy, water clusters\n📊 Temperature sampling for creative variation\n✅ Response:\nRain on the rooftop —\nThe earth drinks what the sky weeps,\nSilence between drops.',
+  reason:  '📥 Tokenized: ["Is", " 17", " a", " prime", " number", "?"]\n🔢 Embedded: numeric + mathematical reasoning activated\n🔍 Attention: all tokens tightly cross-attend\n🧠 Chain of thought: "17÷2=8.5, 17÷3=5.67, 17÷4=4.25 — no integer divisors"\n✅ Response: "Yes, 17 is a prime number — divisible only by 1 and itself."'
+};
+function llmDemo(el, key) {
+  document.querySelectorAll('#llm-prompts .token').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('llm-output').innerText = llmData[key];
+}
+
+const ragDocs = [
+  { text: "Our refund policy allows returns within 30 days of purchase. Items must be in original condition with original packaging. Digital downloads are non-refundable.", src: "docs/refund-policy.md", score: "0.94" },
+  { text: "For damaged or defective items, contact support@company.com with photos. Approved refunds are processed within 5–7 business days to the original payment method.", src: "docs/support-guide.md", score: "0.81" },
+  { text: "Premium members receive an extended 60-day return window on all physical products, plus free return shipping.", src: "docs/membership-benefits.md", score: "0.73" }
+];
+function ragDemo() {
+  const cont = document.getElementById('rag-results');
+  const out = document.getElementById('rag-output');
+  cont.innerHTML = ''; out.style.display = 'none';
+  setTimeout(() => { cont.innerHTML = '<div style="font-size:12px;color:#9c9a92;margin-bottom:8px">🔍 Embedding query → semantic search in vector DB...</div>'; }, 100);
+  setTimeout(() => {
+    ragDocs.slice(0,2).forEach(d => {
+      cont.innerHTML += `<div class="rag-result"><div style="font-size:13px;line-height:1.55">${d.text}</div><div class="rag-source">📄 ${d.src} &nbsp;·&nbsp; similarity score: ${d.score}</div></div>`;
+    });
+  }, 900);
+  setTimeout(() => {
+    out.style.display = 'block';
+    out.innerHTML = '<span style="font-size:11px;color:#9c9a92">LLM answer — grounded on retrieved documents:</span><br><br>Based on our policy, you may return items within <strong>30 days</strong> of purchase in original condition. Refunds process in 5–7 business days. Note: digital downloads are non-refundable. Premium members enjoy a 60-day return window with free return shipping.';
+  }, 1800);
+}
+
+const agentSteps = {
+  research: [
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'I need to search the web for the latest AI news today.' },
+    { type:'ACT',   c:'#0F6E56', bg:'#d8f5ea', t:'web_search("AI news June 2026")' },
+    { type:'OBS',   c:'#854F0B', bg:'#fce8c0', t:'Found 12 articles: GPT-5 release, Anthropic Series F, robotics breakthroughs.' },
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'I have enough data. Selecting top 3 most relevant stories to summarize.' },
+    { type:'DONE',  c:'#3C3489', bg:'#eeedfe', t:'✓ Summary ready: Top 3 AI news stories compiled and formatted.' }
+  ],
+  code: [
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'I need to read the file first to understand the context of the bug.' },
+    { type:'ACT',   c:'#0F6E56', bg:'#d8f5ea', t:'fs.read_file("app.py", lines=45-80)' },
+    { type:'OBS',   c:'#854F0B', bg:'#fce8c0', t:'Found: IndexError on line 62 — list accessed without bounds check.' },
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'Fix: add length check before access. Writing the patch now.' },
+    { type:'ACT',   c:'#0F6E56', bg:'#d8f5ea', t:'fs.write_patch("app.py", line=62, code="if len(items) > 0:")' },
+    { type:'DONE',  c:'#3C3489', bg:'#eeedfe', t:'✓ Bug fixed. IndexError resolved with bounds check on line 62.' }
+  ],
+  email: [
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'Plan: (1) query metrics DB (2) draft email (3) send to team.' },
+    { type:'ACT',   c:'#0F6E56', bg:'#d8f5ea', t:'db.query("SELECT metrics FROM weekly_reports WHERE date=today")' },
+    { type:'OBS',   c:'#854F0B', bg:'#fce8c0', t:'Data: Revenue +12%, Users +8%, Churn -3% vs last week.' },
+    { type:'THINK', c:'#185FA5', bg:'#ddeeff', t:'Good data. Drafting the weekly report email now.' },
+    { type:'ACT',   c:'#0F6E56', bg:'#d8f5ea', t:'gmail.send(to="team@co.com", subject="Weekly Report", body="...")' },
+    { type:'DONE',  c:'#3C3489', bg:'#eeedfe', t:'✓ Email sent to team@co.com with this week\'s performance metrics.' }
+  ]
+};
+function agentDemo(el, key) {
+  document.querySelectorAll('#panel-agent .token').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  const log = document.getElementById('agent-log');
+  log.style.display = 'block'; log.innerHTML = '';
+  agentSteps[key].forEach((s, i) => {
+    setTimeout(() => {
+      log.innerHTML += `<div style="margin-bottom:4px"><span class="log-tag" style="background:${s.bg};color:${s.c}">${s.type}</span><span style="color:#d0cfca">${s.t}</span></div>`;
+      log.scrollTop = log.scrollHeight;
+    }, i * 750);
+  });
+}
+
+const mcpTools = {
+  github: ['search_issues', 'create_pull_request', 'list_repos', 'get_file_contents', 'create_branch', 'merge_pr'],
+  notion: ['search_pages', 'create_page', 'update_block', 'list_databases', 'query_database', 'append_block'],
+  happenstance: ['search-network', 'research-person', 'get-groups', 'get-group', 'get-credits', 'find-more-results'],
+  slack: ['send_message', 'list_channels', 'search_messages', 'create_channel', 'get_thread']
+};
+function showMcpTools(el, key) {
+  const div = document.getElementById('mcp-tools-' + key);
+  if (div.innerHTML) { div.innerHTML = ''; return; }
+  div.innerHTML = 'Tools: ' + mcpTools[key].join(' · ');
+}
+</script>
+</body>
+</html>
