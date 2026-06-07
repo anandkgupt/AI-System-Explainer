@@ -1,22 +1,22 @@
 Now I create a rich, interactive explainer for all four AI concepts with detailed processes, examples, and tools.Here's your fully interactive explainer! It has four tabs — one for each system. Here's what's inside each:
 
-**🧠 LLM tab**
+** LLM tab**
 - 5-step process: Tokenization → Embedding → Attention → Next-token prediction → Detokenization
 - Live demo: click a prompt ("Is 17 prime?", "Write a haiku") to trace exactly how the model processes it
 - Provider cards: Claude, GPT-4o, Gemini, Llama 3, Mistral, Gemma
 - Key limitations listed
 
-**📚 RAG tab**
+** RAG tab**
 - 5-step process: Chunk documents → Embed into vector DB → Embed query → Semantic search → Augment & generate
 - Live demo: type a question, watch it retrieve chunks from a simulated doc store, then generate a grounded answer
 - Tools: LangChain, LlamaIndex, Pinecone, Weaviate, pgvector, ChromaDB
 
-**🤖 AI Agent tab**
+** AI Agent tab**
 - 5-step ReAct loop: Goal → Reason → Act → Observe → Iterate
 - Live demo: pick a task ("Fix a bug", "Draft & send report") and watch the Thought/Action/Observation loop play out in real time
 - Frameworks: Claude Code, AutoGPT, CrewAI, LangGraph, OpenAI Agents SDK
 
-**⚡ MCP tab**
+** MCP tab**
 - 5-step process: Server exposes tools → Client connects → User requests → Tool call → Result synthesized
 - Live demo: click GitHub, Notion, Happenstance (the one you read about!), or Slack MCP to see what tools each exposes
 - Why MCP matters: Standardized, Secure, Composable, Open
